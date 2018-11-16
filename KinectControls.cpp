@@ -5,7 +5,7 @@
 
 #include "stdafx.h"
 #include <strsafe.h>
-#include "SkeletonBasics.h"
+#include "KinectControls.h"
 #include <iostream>
 
 
@@ -168,20 +168,109 @@ void CSkeletonBasics::ProcessSkeleton()
 
         if (NUI_SKELETON_TRACKED == trackingState)
         {
-            // We're tracking the skeleton, draw it
+            // We're tracking the skeleton
 
-			/*std::cout << NUI_SKELETON_POSITION_SPINE;
-			std::cout << NUI_SKELETON_POSITION_HAND_RIGHT;*/
 			/*std::cout << "Spine value: ";
-			std::cout << skeletonFrame.SkeletonData[i].SkeletonPositions[NUI_SKELETON_POSITION_SPINE].x << "\n";
-			std::cout << "Right Hand Value: ";
-			std::cout << skeletonFrame.SkeletonData[i].SkeletonPositions[NUI_SKELETON_POSITION_HAND_RIGHT].x << "\n";*/
+			std::cout << skeletonFrame.SkeletonData[i].SkeletonPositions[NUI_SKELETON_POSITION_SPINE].z << "\n";
+			std::cout << "Right Foot Value: ";
+			std::cout << skeletonFrame.SkeletonData[i].SkeletonPositions[NUI_SKELETON_POSITION_FOOT_RIGHT].z << "\n";*/
+
 			if (skeletonFrame.SkeletonData[i].SkeletonPositions[NUI_SKELETON_POSITION_HAND_RIGHT].x - skeletonFrame.SkeletonData[i].SkeletonPositions[NUI_SKELETON_POSITION_SPINE].x > .5) {
 				std::cout << "RIGHT ARM EXTENDED\n";
+				INPUT ip;
+				ip.type = INPUT_KEYBOARD;
+				ip.ki.wScan = 0;
+				ip.ki.time = 0;
+				ip.ki.dwExtraInfo = 0;
+				ip.ki.wVk = 0x27; // virtual-key code for right arrow
+				ip.ki.dwFlags = 0; // 0 for key press
+				SendInput(1, &ip, sizeof(INPUT));
+				Sleep(30);
+				// Release the "right arrow" key
+				ip.ki.dwFlags = KEYEVENTF_KEYUP; // KEYEVENTF_KEYUP for key release
+				SendInput(1, &ip, sizeof(INPUT));
 			}
 
 			if (skeletonFrame.SkeletonData[i].SkeletonPositions[NUI_SKELETON_POSITION_HAND_LEFT].x - skeletonFrame.SkeletonData[i].SkeletonPositions[NUI_SKELETON_POSITION_SPINE].x < -.5) {
 				std::cout << "LEFT ARM EXTENDED\n";
+				INPUT ip;
+				ip.type = INPUT_KEYBOARD;
+				ip.ki.wScan = 0;
+				ip.ki.time = 0;
+				ip.ki.dwExtraInfo = 0;
+				ip.ki.wVk = 0x25; // virtual-key code for left arrow
+				ip.ki.dwFlags = 0; // 0 for key press
+				SendInput(1, &ip, sizeof(INPUT));
+				Sleep(30);
+				// Release the "left arrow" key
+				ip.ki.dwFlags = KEYEVENTF_KEYUP; // KEYEVENTF_KEYUP for key release
+				SendInput(1, &ip, sizeof(INPUT));
+			}
+
+			if (skeletonFrame.SkeletonData[i].SkeletonPositions[NUI_SKELETON_POSITION_HAND_RIGHT].z - skeletonFrame.SkeletonData[i].SkeletonPositions[NUI_SKELETON_POSITION_SPINE].z < -.5) {
+				std::cout << "RIGHT ARM FORWARD\n";
+				INPUT ip;
+				ip.type = INPUT_KEYBOARD;
+				ip.ki.wScan = 0;
+				ip.ki.time = 0;
+				ip.ki.dwExtraInfo = 0;
+				ip.ki.wVk = 0x31; // virtual-key code for 1
+				ip.ki.dwFlags = 0; // 0 for key press
+				SendInput(1, &ip, sizeof(INPUT));
+				Sleep(30);
+				// Release the "1" key
+				ip.ki.dwFlags = KEYEVENTF_KEYUP; // KEYEVENTF_KEYUP for key release
+				SendInput(1, &ip, sizeof(INPUT));
+			}
+
+			if (skeletonFrame.SkeletonData[i].SkeletonPositions[NUI_SKELETON_POSITION_HAND_LEFT].z - skeletonFrame.SkeletonData[i].SkeletonPositions[NUI_SKELETON_POSITION_SPINE].z < -.5) {
+				std::cout << "LEFT ARM FORWARD\n";
+				INPUT ip;
+				ip.type = INPUT_KEYBOARD;
+				ip.ki.wScan = 0;
+				ip.ki.time = 0;
+				ip.ki.dwExtraInfo = 0;
+				ip.ki.wVk = 0x32; // virtual-key code for 2
+				ip.ki.dwFlags = 0; // 0 for key press
+				SendInput(1, &ip, sizeof(INPUT));
+				Sleep(30);
+				// Release the "2" key
+				ip.ki.dwFlags = KEYEVENTF_KEYUP; // KEYEVENTF_KEYUP for key release
+				SendInput(1, &ip, sizeof(INPUT));
+			}
+
+			if (skeletonFrame.SkeletonData[i].SkeletonPositions[NUI_SKELETON_POSITION_FOOT_LEFT].z - skeletonFrame.SkeletonData[i].SkeletonPositions[NUI_SKELETON_POSITION_SPINE].z < -.7) {
+				std::cout << "LEFT FOOT FORWARD\n";
+				INPUT ip;
+				ip.type = INPUT_KEYBOARD;
+				ip.ki.wScan = 0;
+				ip.ki.time = 0;
+				ip.ki.dwExtraInfo = 0;
+				ip.ki.wVk = 0x57; // virtual-key code for w
+				ip.ki.dwFlags = 0; // 0 for key press
+				SendInput(1, &ip, sizeof(INPUT));
+				Sleep(30);
+				// Release the "W" key
+				ip.ki.dwFlags = KEYEVENTF_KEYUP; // KEYEVENTF_KEYUP for key release
+				SendInput(1, &ip, sizeof(INPUT));
+				Sleep(300);
+			}
+
+			if (skeletonFrame.SkeletonData[i].SkeletonPositions[NUI_SKELETON_POSITION_FOOT_RIGHT].z - skeletonFrame.SkeletonData[i].SkeletonPositions[NUI_SKELETON_POSITION_SPINE].z < -.7) {
+				std::cout << "RIGHT FOOT FORWARD\n";
+				INPUT ip;
+				ip.type = INPUT_KEYBOARD;
+				ip.ki.wScan = 0;
+				ip.ki.time = 0;
+				ip.ki.dwExtraInfo = 0;
+				ip.ki.wVk = 0x51; // virtual-key code for q
+				ip.ki.dwFlags = 0; // 0 for key press
+				SendInput(1, &ip, sizeof(INPUT));
+				Sleep(30);
+				// Release the "Q" key
+				ip.ki.dwFlags = KEYEVENTF_KEYUP; // KEYEVENTF_KEYUP for key release
+				SendInput(1, &ip, sizeof(INPUT));
+				Sleep(700);
 			}
         }
     }
@@ -189,6 +278,7 @@ void CSkeletonBasics::ProcessSkeleton()
 
 int main() {
 
+	//create control instance
 	CSkeletonBasics application;
 
 	application.Run();

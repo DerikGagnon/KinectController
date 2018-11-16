@@ -6,6 +6,7 @@
 #pragma once
 
 #include "NuiApi.h"
+#define WINVER 0x0500
 
 class CSkeletonBasics
 {
