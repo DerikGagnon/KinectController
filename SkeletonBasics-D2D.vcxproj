@@ -164,18 +164,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <None Include="app.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Resource.h" />
     <ClInclude Include="SkeletonBasics.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SkeletonBasics.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="SkeletonBasics.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

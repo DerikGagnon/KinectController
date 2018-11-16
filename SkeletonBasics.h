@@ -6,14 +6,10 @@
 
 #pragma once
 
-#include "resource.h"
 #include "NuiApi.h"
 
 class CSkeletonBasics
 {
-    static const int        cScreenWidth  = 320;
-    static const int        cScreenHeight = 240;
-
     static const int        cStatusMessageMaxLen = MAX_PATH*2;
 
 public:
@@ -46,17 +42,6 @@ private:
 
     // Current Kinect
     INuiSensor*             m_pNuiSensor;
-
-    // Skeletal drawing
-    ID2D1HwndRenderTarget*   m_pRenderTarget;
-    ID2D1SolidColorBrush*    m_pBrushJointTracked;
-    ID2D1SolidColorBrush*    m_pBrushJointInferred;
-    ID2D1SolidColorBrush*    m_pBrushBoneTracked;
-    ID2D1SolidColorBrush*    m_pBrushBoneInferred;
-    D2D1_POINT_2F            m_Points[NUI_SKELETON_POSITION_COUNT];
-
-    // Direct2D
-    ID2D1Factory*           m_pD2DFactory;
     
     HANDLE                  m_pSkeletonStreamHandle;
     HANDLE                  m_hNextSkeletonEvent;
@@ -73,19 +58,5 @@ private:
     /// Handle new skeleton data
     /// </summary>
     void                    ProcessSkeleton();
-
-    /// <summary>
-    /// Dispose Direct2d resources 
-    /// </summary>
-    void                    DiscardDirect2DResources( );
-
-    /// <summary>
-    /// Converts a skeleton point to screen space
-    /// </summary>
-    /// <param name="skeletonPoint">skeleton point to tranform</param>
-    /// <param name="width">width (in pixels) of output buffer</param>
-    /// <param name="height">height (in pixels) of output buffer</param>
-    /// <returns>point in screen-space</returns>
-    D2D1_POINT_2F           SkeletonToScreen(Vector4 skeletonPoint, int width, int height);
 
 };

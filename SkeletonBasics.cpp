@@ -7,39 +7,17 @@
 #include "stdafx.h"
 #include <strsafe.h>
 #include "SkeletonBasics.h"
-#include "resource.h"
 #include <iostream>
 
-///// <summary>
-///// Entry point for the application
-///// </summary>
-///// <param name="hInstance">handle to the application instance</param>
-///// <param name="hPrevInstance">always 0</param>
-///// <param name="lpCmdLine">command line arguments</param>
-///// <param name="nCmdShow">whether to display minimized, maximized, or normally</param>
-///// <returns>status</returns>
-//int APIENTRY wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLine, int nCmdShow)
-//{
-//    CSkeletonBasics application;
-//    application.Run(hInstance, nCmdShow);
-//}
 
 /// <summary>
 /// Constructor
 /// </summary>
 CSkeletonBasics::CSkeletonBasics() :
-    m_pD2DFactory(NULL),
     m_hNextSkeletonEvent(INVALID_HANDLE_VALUE),
     m_pSkeletonStreamHandle(INVALID_HANDLE_VALUE),
-    m_bSeatedMode(false),
-    m_pRenderTarget(NULL),
-    m_pBrushJointTracked(NULL),
-    m_pBrushJointInferred(NULL),
-    m_pBrushBoneTracked(NULL),
-    m_pBrushBoneInferred(NULL),
     m_pNuiSensor(NULL)
 {
-    ZeroMemory(m_Points,sizeof(m_Points));
 }
 
 /// <summary>
@@ -57,12 +35,6 @@ CSkeletonBasics::~CSkeletonBasics()
     {
         CloseHandle(m_hNextSkeletonEvent);
     }
-
-    // clean up Direct2D objects
-    DiscardDirect2DResources();
-
-    // clean up Direct2D
-    SafeRelease(m_pD2DFactory);
 
     SafeRelease(m_pNuiSensor);
 }
@@ -215,42 +187,6 @@ void CSkeletonBasics::ProcessSkeleton()
         }
     }
 }
-
-/// <summary>
-/// Converts a skeleton point to screen space
-/// </summary>
-/// <param name="skeletonPoint">skeleton point to tranform</param>
-/// <param name="width">width (in pixels) of output buffer</param>
-/// <param name="height">height (in pixels) of output buffer</param>
-/// <returns>point in screen-space</returns>
-D2D1_POINT_2F CSkeletonBasics::SkeletonToScreen(Vector4 skeletonPoint, int width, int height)
-{
-    LONG x, y;
-    USHORT depth;
-
-    // Calculate the skeleton's position on the screen
-    // NuiTransformSkeletonToDepthImage returns coordinates in NUI_IMAGE_RESOLUTION_320x240 space
-    NuiTransformSkeletonToDepthImage(skeletonPoint, &x, &y, &depth);
-
-    float screenPointX = static_cast<float>(x * width) / cScreenWidth;
-    float screenPointY = static_cast<float>(y * height) / cScreenHeight;
-
-    return D2D1::Point2F(screenPointX, screenPointY);
-}
-
-/// <summary>
-/// Dispose Direct2d resources 
-/// </summary>
-void CSkeletonBasics::DiscardDirect2DResources( )
-{
-    SafeRelease(m_pRenderTarget);
-
-    SafeRelease(m_pBrushJointTracked);
-    SafeRelease(m_pBrushJointInferred);
-    SafeRelease(m_pBrushBoneTracked);
-    SafeRelease(m_pBrushBoneInferred);
-}
-
 
 int main() {
 
