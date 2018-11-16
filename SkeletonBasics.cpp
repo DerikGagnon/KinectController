@@ -1,8 +1,7 @@
-﻿//------------------------------------------------------------------------------
-// <copyright file="SkeletonBasics.cpp" company="Microsoft">
-//     Copyright (c) Microsoft Corporation.  All rights reserved.
-// </copyright>
-//------------------------------------------------------------------------------
+﻿/*
+	This file was modified from the Microsoft Kinect 1.8 SDK Developer Toolkit
+	SkeletonBasics - C++ program.
+*/
 
 #include "stdafx.h"
 #include <strsafe.h>

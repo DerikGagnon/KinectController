@@ -1,8 +1,7 @@
-﻿//------------------------------------------------------------------------------
-// <copyright file="SkeletonBasics.h" company="Microsoft">
-//     Copyright (c) Microsoft Corporation.  All rights reserved.
-// </copyright>
-//------------------------------------------------------------------------------
+﻿/*
+	This file was modified from the Microsoft Kinect 1.8 SDK Developer Toolkit
+	SkeletonBasics - C++ program.
+*/
 
 #pragma once
 
@@ -23,11 +22,6 @@ public:
     /// </summary>
     ~CSkeletonBasics();
 
-	/// <summary>
-/// Main processing function
-/// </summary>
-	void                    Update();
-
     /// <summary>
     /// Creates the main window and begins processing
     /// </summary>
@@ -45,8 +39,11 @@ private:
     
     HANDLE                  m_pSkeletonStreamHandle;
     HANDLE                  m_hNextSkeletonEvent;
-    
 
+	/// <summary>
+	/// Main processing function
+	/// </summary>
+	void                    Update();
 
     /// <summary>
     /// Create the first connected Kinect found 
