@@ -4,7 +4,7 @@
 */
 
 #include "stdafx.h"
-#include <strsafe.h>
+//#include <strsafe.h>
 #include "KinectControls.h"
 #include <iostream>
 
@@ -41,8 +41,6 @@ KinectController::~KinectController()
 /// <summary>
 /// Creates the main window and begins processing
 /// </summary>
-/// <param name="hInstance">handle to the application instance</param>
-/// <param name="nCmdShow">whether to display minimized, maximized, or normally</param>
 void KinectController::Run()
 {
 	std::cout << "RUN\nPolling For Motions...\n";
