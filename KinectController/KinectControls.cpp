@@ -12,7 +12,7 @@
 /// <summary>
 /// Constructor
 /// </summary>
-CSkeletonBasics::CSkeletonBasics() :
+KinectController::KinectController() :
     m_hNextSkeletonEvent(INVALID_HANDLE_VALUE),
     m_pSkeletonStreamHandle(INVALID_HANDLE_VALUE),
     m_pNuiSensor(NULL)
@@ -22,7 +22,7 @@ CSkeletonBasics::CSkeletonBasics() :
 /// <summary>
 /// Destructor
 /// </summary>
-CSkeletonBasics::~CSkeletonBasics()
+KinectController::~KinectController()
 {
 	std::cout << "DESTRUCTOR\n";
     if (m_pNuiSensor)
@@ -43,7 +43,7 @@ CSkeletonBasics::~CSkeletonBasics()
 /// </summary>
 /// <param name="hInstance">handle to the application instance</param>
 /// <param name="nCmdShow">whether to display minimized, maximized, or normally</param>
-void CSkeletonBasics::Run()
+void KinectController::Run()
 {
 	std::cout << "RUN\nPolling For Motions...\n";
 	CreateFirstConnected();
@@ -71,7 +71,7 @@ void CSkeletonBasics::Run()
 /// <summary>
 /// Main processing function
 /// </summary>
-void CSkeletonBasics::Update()
+void KinectController::Update()
 {
 	//std::cout << "UPDATE\n";
     if (NULL == m_pNuiSensor)
@@ -90,7 +90,7 @@ void CSkeletonBasics::Update()
 /// Create the first connected Kinect found 
 /// </summary>
 /// <returns>indicates success or failure</returns>
-HRESULT CSkeletonBasics::CreateFirstConnected()
+HRESULT KinectController::CreateFirstConnected()
 {
     INuiSensor * pNuiSensor;
 
@@ -149,7 +149,7 @@ HRESULT CSkeletonBasics::CreateFirstConnected()
 /// <summary>
 /// Handle new skeleton data
 /// </summary>
-void CSkeletonBasics::ProcessSkeleton()
+void KinectController::ProcessSkeleton()
 {
     NUI_SKELETON_FRAME skeletonFrame = {0};
 
@@ -279,7 +279,7 @@ void CSkeletonBasics::ProcessSkeleton()
 int main() {
 
 	//create control instance
-	CSkeletonBasics application;
+	KinectController application;
 
 	application.Run();
 

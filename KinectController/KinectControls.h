@@ -8,7 +8,7 @@
 #include "NuiApi.h"
 #define WINVER 0x0500
 
-class CSkeletonBasics
+class KinectController
 {
     static const int        cStatusMessageMaxLen = MAX_PATH*2;
 
@@ -16,12 +16,12 @@ public:
     /// <summary>
     /// Constructor
     /// </summary>
-    CSkeletonBasics();
+    KinectController();
 
     /// <summary>
     /// Destructor
     /// </summary>
-    ~CSkeletonBasics();
+    ~KinectController();
 
     /// <summary>
     /// Creates the main window and begins processing
