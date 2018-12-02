@@ -189,6 +189,47 @@ void KinectController::ProcessSkeleton()
 				SendInput(1, &ip, sizeof(INPUT));
 			}
 
+			// CODE FOR HOLDING KEY DOWN
+			// if (skeletonFrame.SkeletonData[i].SkeletonPositions[NUI_SKELETON_POSITION_HAND_RIGHT].x - skeletonFrame.SkeletonData[i].SkeletonPositions[NUI_SKELETON_POSITION_SPINE].x > .5) {
+			// 	std::cout << "RIGHT ARM NORMAL\n";
+			// 	INPUT ip;
+			// 	// Release the "right arrow" key
+			// 	ip.ki.dwFlags = KEYEVENTF_KEYUP; // KEYEVENTF_KEYUP for key release
+			// 	SendInput(1, &ip, sizeof(INPUT));
+			// }
+
+			if (skeletonFrame.SkeletonData[i].SkeletonPositions[NUI_SKELETON_POSITION_HAND_RIGHT].y - skeletonFrame.SkeletonData[i].SkeletonPositions[NUI_SKELETON_POSITION_SPINE].y < -.5) {
+				std::cout << "RIGHT ARM UP\n";
+				INPUT ip;
+				ip.type = INPUT_KEYBOARD;
+				ip.ki.wScan = 0;
+				ip.ki.time = 0;
+				ip.ki.dwExtraInfo = 0;
+				ip.ki.wVk = 0x26; // virtual-key code for up arrow
+				ip.ki.dwFlags = 0; // 0 for key press
+				SendInput(1, &ip, sizeof(INPUT));
+				Sleep(30);
+				// Release the "up arrow" key
+				ip.ki.dwFlags = KEYEVENTF_KEYUP; // KEYEVENTF_KEYUP for key release
+				SendInput(1, &ip, sizeof(INPUT));
+			}
+
+			if (skeletonFrame.SkeletonData[i].SkeletonPositions[NUI_SKELETON_POSITION_HAND_RIGHT].y - skeletonFrame.SkeletonData[i].SkeletonPositions[NUI_SKELETON_POSITION_SPINE].y < -.5) {
+				std::cout << "RIGHT ARM UP\n";
+				INPUT ip;
+				ip.type = INPUT_KEYBOARD;
+				ip.ki.wScan = 0;
+				ip.ki.time = 0;
+				ip.ki.dwExtraInfo = 0;
+				ip.ki.wVk = 0x28; // virtual-key code for down arrow
+				ip.ki.dwFlags = 0; // 0 for key press
+				SendInput(1, &ip, sizeof(INPUT));
+				Sleep(30);
+				// Release the "down arrow" key
+				ip.ki.dwFlags = KEYEVENTF_KEYUP; // KEYEVENTF_KEYUP for key release
+				SendInput(1, &ip, sizeof(INPUT));
+			}
+
 			if (skeletonFrame.SkeletonData[i].SkeletonPositions[NUI_SKELETON_POSITION_HAND_LEFT].x - skeletonFrame.SkeletonData[i].SkeletonPositions[NUI_SKELETON_POSITION_SPINE].x < -.5) {
 				std::cout << "LEFT ARM EXTENDED\n";
 				INPUT ip;
@@ -221,6 +262,8 @@ void KinectController::ProcessSkeleton()
 				SendInput(1, &ip, sizeof(INPUT));
 			}
 
+			/*
+			// Crouch
 			if (skeletonFrame.SkeletonData[i].SkeletonPositions[NUI_SKELETON_POSITION_HAND_LEFT].z - skeletonFrame.SkeletonData[i].SkeletonPositions[NUI_SKELETON_POSITION_SPINE].z < -.5) {
 				std::cout << "LEFT ARM FORWARD\n";
 				INPUT ip;
@@ -236,6 +279,7 @@ void KinectController::ProcessSkeleton()
 				ip.ki.dwFlags = KEYEVENTF_KEYUP; // KEYEVENTF_KEYUP for key release
 				SendInput(1, &ip, sizeof(INPUT));
 			}
+			*/
 
 			if (skeletonFrame.SkeletonData[i].SkeletonPositions[NUI_SKELETON_POSITION_FOOT_LEFT].z - skeletonFrame.SkeletonData[i].SkeletonPositions[NUI_SKELETON_POSITION_SPINE].z < -.7) {
 				std::cout << "LEFT FOOT FORWARD\n";
