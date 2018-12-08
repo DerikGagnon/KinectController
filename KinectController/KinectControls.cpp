@@ -220,7 +220,7 @@ void KinectController::ProcessSkeleton(int &forward, INPUT &ip, bool *keyPressed
 			if ((skeletonFrame.SkeletonData[i].SkeletonPositions[NUI_SKELETON_POSITION_HAND_RIGHT].y -
 				skeletonFrame.SkeletonData[i].SkeletonPositions[NUI_SKELETON_POSITION_SPINE].y > .65)) {
 				std::cout << "SHORYUKEN\n";
-				ip.ki.wVk = 0x27; // virtual-key code for forward
+				ip.ki.wVk = forward; // virtual-key code for forward
 				ip.ki.dwFlags = 0; // 0 for key press
 				SendInput(1, &ip, sizeof(INPUT));
 				Sleep(50);
@@ -232,7 +232,7 @@ void KinectController::ProcessSkeleton(int &forward, INPUT &ip, bool *keyPressed
 				Sleep(50);
 				ip.ki.dwFlags = KEYEVENTF_KEYUP; // KEYEVENTF_KEYUP for key release
 				SendInput(1, &ip, sizeof(INPUT));
-				ip.ki.wVk = 0x27; // virtual-key code for forward
+				ip.ki.wVk = forward; // virtual-key code for forward
 				ip.ki.dwFlags = 0; // 0 for key press
 				SendInput(1, &ip, sizeof(INPUT));
 				Sleep(50);
@@ -294,7 +294,7 @@ void KinectController::ProcessSkeleton(int &forward, INPUT &ip, bool *keyPressed
 				ip.ki.dwFlags = 0; // 0 for key press
 				SendInput(1, &ip, sizeof(INPUT));
 				Sleep(50);
-				ip.ki.wVk = 0x27; // virtual-key code for forward
+				ip.ki.wVk = forward; // virtual-key code for forward
 				ip.ki.dwFlags = 0; // 0 for key press
 				SendInput(1, &ip, sizeof(INPUT));
 				Sleep(50);
@@ -307,7 +307,7 @@ void KinectController::ProcessSkeleton(int &forward, INPUT &ip, bool *keyPressed
 				Sleep(100);
 				ip.ki.dwFlags = KEYEVENTF_KEYUP; // KEYEVENTF_KEYUP for key release
 				SendInput(1, &ip, sizeof(INPUT));
-				ip.ki.wVk = 0x27; // virtual-key code for down
+				ip.ki.wVk = forward; // virtual-key code for forward
 				ip.ki.dwFlags = KEYEVENTF_KEYUP; // KEYEVENTF_KEYUP for key release
 				SendInput(1, &ip, sizeof(INPUT));
 			}
