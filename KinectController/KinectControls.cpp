@@ -119,42 +119,42 @@ HRESULT KinectController::CreateFirstConnected()
         hr = NuiCreateSensorByIndex(i, &pNuiSensor);
         if (FAILED(hr))
         {
-            continue;
-        }
+			continue;
+		}
 
-        // Get the status of the sensor, and if connected, then we can initialize it
-        hr = pNuiSensor->NuiStatus();
-        if (S_OK == hr)
-        {
-            m_pNuiSensor = pNuiSensor;
-            break;
-        }
+		// Get the status of the sensor, and if connected, then we can initialize it
+		hr = pNuiSensor->NuiStatus();
+		if (S_OK == hr)
+		{
+			m_pNuiSensor = pNuiSensor;
+			break;
+		}
 
-        // This sensor wasn't OK, so release it since we're not using it
-        pNuiSensor->Release();
-    }
+		// This sensor wasn't OK, so release it since we're not using it
+		pNuiSensor->Release();
+	}
 
-    if (NULL != m_pNuiSensor)
-    {
-        // Initialize the Kinect and specify that we'll be using skeleton and depth
-        hr = m_pNuiSensor->NuiInitialize(NUI_INITIALIZE_FLAG_USES_SKELETON | NUI_INITIALIZE_FLAG_USES_DEPTH); 
-        if (SUCCEEDED(hr))
-        {
-            // Create an event that will be signaled when skeleton data is available
-            m_hNextSkeletonEvent = CreateEventW(NULL, TRUE, FALSE, NULL);
+	if (NULL != m_pNuiSensor)
+	{
+		// Initialize the Kinect and specify that we'll be using skeleton and depth
+		hr = m_pNuiSensor->NuiInitialize(NUI_INITIALIZE_FLAG_USES_SKELETON | NUI_INITIALIZE_FLAG_USES_DEPTH);
+		if (SUCCEEDED(hr))
+		{
+			// Create an event that will be signaled when skeleton data is available
+			m_hNextSkeletonEvent = CreateEventW(NULL, TRUE, FALSE, NULL);
 
-            // Open a skeleton stream to receive skeleton data
-            hr = m_pNuiSensor->NuiSkeletonTrackingEnable(m_hNextSkeletonEvent, 0); 
-        }
-    }
+			// Open a skeleton stream to receive skeleton data
+			hr = m_pNuiSensor->NuiSkeletonTrackingEnable(m_hNextSkeletonEvent, 0);
+		}
+	}
 
-    if (NULL == m_pNuiSensor || FAILED(hr))
-    {
-        //SetStatusMessage(L"No ready Kinect found!");
-        return E_FAIL;
-    }
+	if (NULL == m_pNuiSensor || FAILED(hr))
+	{
+		//SetStatusMessage(L"No ready Kinect found!");
+		return E_FAIL;
+	}
 
-    return hr;
+	return hr;
 }
 
 /// <summary>
@@ -162,28 +162,28 @@ HRESULT KinectController::CreateFirstConnected()
 /// </summary>
 void KinectController::ProcessSkeleton(int &forward, INPUT &ip, bool *keyPressedArray)
 {
-    NUI_SKELETON_FRAME skeletonFrame = {0};
+	NUI_SKELETON_FRAME skeletonFrame = { 0 };
 
-    HRESULT hr = m_pNuiSensor->NuiSkeletonGetNextFrame(0, &skeletonFrame);
-    if ( FAILED(hr) )
-    {
-        return;
-    }
+	HRESULT hr = m_pNuiSensor->NuiSkeletonGetNextFrame(0, &skeletonFrame);
+	if (FAILED(hr))
+	{
+		return;
+	}
 
-    // smooth out the skeleton data
-    m_pNuiSensor->NuiTransformSmooth(&skeletonFrame, NULL);
+	// smooth out the skeleton data
+	m_pNuiSensor->NuiTransformSmooth(&skeletonFrame, NULL);
 
-    for (int i = 0 ; i < NUI_SKELETON_COUNT; ++i)
-    {
-        NUI_SKELETON_TRACKING_STATE trackingState = skeletonFrame.SkeletonData[i].eTrackingState;
+	for (int i = 0; i < NUI_SKELETON_COUNT; ++i)
+	{
+		NUI_SKELETON_TRACKING_STATE trackingState = skeletonFrame.SkeletonData[i].eTrackingState;
 
-        if (NUI_SKELETON_TRACKED == trackingState)
-        {
+		if (NUI_SKELETON_TRACKED == trackingState)
+		{
 
 			for (int i = 0; i < 20; i++) {
 				keyPressedArray[i] = false;
 			}
-            // We're tracking the skeleton
+			// We're tracking the skeleton
 
 			/*std::cout << "Spine value: ";
 			std::cout << skeletonFrame.SkeletonData[i].SkeletonPositions[NUI_SKELETON_POSITION_SPINE].y << "\n";
@@ -193,7 +193,7 @@ void KinectController::ProcessSkeleton(int &forward, INPUT &ip, bool *keyPressed
 			std::cout << skeletonFrame.SkeletonData[i].SkeletonPositions[NUI_SKELETON_POSITION_FOOT_RIGHT].y << "\n";*/
 
 			// keyPressedArray[0]
-			if (skeletonFrame.SkeletonData[i].SkeletonPositions[NUI_SKELETON_POSITION_HAND_RIGHT].x - 
+			if (skeletonFrame.SkeletonData[i].SkeletonPositions[NUI_SKELETON_POSITION_HAND_RIGHT].x -
 				skeletonFrame.SkeletonData[i].SkeletonPositions[NUI_SKELETON_POSITION_SPINE].x > .5) {
 				std::cout << "RIGHT ARM EXTENDED\n";
 				ip.ki.wVk = 0x27; // virtual-key code for right arrow
@@ -216,8 +216,38 @@ void KinectController::ProcessSkeleton(int &forward, INPUT &ip, bool *keyPressed
 				forward = 0x25;
 			}
 
+			// SHORYUKEN
+			if ((skeletonFrame.SkeletonData[i].SkeletonPositions[NUI_SKELETON_POSITION_HAND_RIGHT].y -
+				skeletonFrame.SkeletonData[i].SkeletonPositions[NUI_SKELETON_POSITION_SPINE].y > .65)) {
+				std::cout << "SHORYUKEN\n";
+				ip.ki.wVk = 0x27; // virtual-key code for forward
+				ip.ki.dwFlags = 0; // 0 for key press
+				SendInput(1, &ip, sizeof(INPUT));
+				Sleep(50);
+				ip.ki.dwFlags = KEYEVENTF_KEYUP; // KEYEVENTF_KEYUP for key release
+				SendInput(1, &ip, sizeof(INPUT));
+				ip.ki.wVk = 0x28; // virtual-key code for down
+				ip.ki.dwFlags = 0; // 0 for key press
+				SendInput(1, &ip, sizeof(INPUT));
+				Sleep(50);
+				ip.ki.dwFlags = KEYEVENTF_KEYUP; // KEYEVENTF_KEYUP for key release
+				SendInput(1, &ip, sizeof(INPUT));
+				ip.ki.wVk = 0x27; // virtual-key code for forward
+				ip.ki.dwFlags = 0; // 0 for key press
+				SendInput(1, &ip, sizeof(INPUT));
+				Sleep(50);
+				ip.ki.dwFlags = KEYEVENTF_KEYUP; // KEYEVENTF_KEYUP for key release
+				SendInput(1, &ip, sizeof(INPUT));
+				ip.ki.wVk = 0x31; // virtual-key code for 1
+				ip.ki.dwFlags = 0; // 0 for key press
+				SendInput(1, &ip, sizeof(INPUT));
+				Sleep(100);
+				ip.ki.dwFlags = KEYEVENTF_KEYUP; // KEYEVENTF_KEYUP for key release
+				SendInput(1, &ip, sizeof(INPUT));
+			}
+
 			// keyPressedArray[1]
-			if (skeletonFrame.SkeletonData[i].SkeletonPositions[NUI_SKELETON_POSITION_HAND_RIGHT].y - 
+			else if (skeletonFrame.SkeletonData[i].SkeletonPositions[NUI_SKELETON_POSITION_HAND_LEFT].y - 
 				skeletonFrame.SkeletonData[i].SkeletonPositions[NUI_SKELETON_POSITION_SPINE].y > .65) {
 				std::cout << "RIGHT ARM UP\n";
 				ip.ki.wVk = 0x26; // virtual-key code for up arrow
@@ -259,29 +289,25 @@ void KinectController::ProcessSkeleton(int &forward, INPUT &ip, bool *keyPressed
 						skeletonFrame.SkeletonData[i].SkeletonPositions[NUI_SKELETON_POSITION_HAND_RIGHT].x < .1) &&
 						(skeletonFrame.SkeletonData[i].SkeletonPositions[NUI_SKELETON_POSITION_HAND_LEFT].y -
 							skeletonFrame.SkeletonData[i].SkeletonPositions[NUI_SKELETON_POSITION_HAND_RIGHT].y < .1)) {
-				std::cout << "SHORYUKEN\n";
-				ip.ki.wVk = 0x27; // virtual-key code for forward
-				ip.ki.dwFlags = 0; // 0 for key press
-				SendInput(1, &ip, sizeof(INPUT));
-				Sleep(50);
-				ip.ki.dwFlags = KEYEVENTF_KEYUP; // KEYEVENTF_KEYUP for key release
-				SendInput(1, &ip, sizeof(INPUT));
+				std::cout << "HADOUKEN\n";
 				ip.ki.wVk = 0x28; // virtual-key code for down
 				ip.ki.dwFlags = 0; // 0 for key press
 				SendInput(1, &ip, sizeof(INPUT));
 				Sleep(50);
-				ip.ki.dwFlags = KEYEVENTF_KEYUP; // KEYEVENTF_KEYUP for key release
-				SendInput(1, &ip, sizeof(INPUT));
 				ip.ki.wVk = 0x27; // virtual-key code for forward
 				ip.ki.dwFlags = 0; // 0 for key press
 				SendInput(1, &ip, sizeof(INPUT));
 				Sleep(50);
+				ip.ki.wVk = 0x28; // virtual-key code for down
 				ip.ki.dwFlags = KEYEVENTF_KEYUP; // KEYEVENTF_KEYUP for key release
 				SendInput(1, &ip, sizeof(INPUT));
 				ip.ki.wVk = 0x31; // virtual-key code for 1
 				ip.ki.dwFlags = 0; // 0 for key press
 				SendInput(1, &ip, sizeof(INPUT));
 				Sleep(100);
+				ip.ki.dwFlags = KEYEVENTF_KEYUP; // KEYEVENTF_KEYUP for key release
+				SendInput(1, &ip, sizeof(INPUT));
+				ip.ki.wVk = 0x27; // virtual-key code for down
 				ip.ki.dwFlags = KEYEVENTF_KEYUP; // KEYEVENTF_KEYUP for key release
 				SendInput(1, &ip, sizeof(INPUT));
 			}
