@@ -6,6 +6,7 @@
 #pragma once
 
 #include "NuiApi.h"
+#include <string>
 #define WINVER 0x0500
 
 class KinectController
@@ -36,7 +37,7 @@ private:
 	/// <summary>
 	/// Main processing function
 	/// </summary>
-	void Update();
+	void Update(int &forward, INPUT &ip, bool *keyPressedArray);
 
     /// <summary>
     /// Create the first connected Kinect found 
@@ -47,6 +48,6 @@ private:
     /// <summary>
     /// Handle new skeleton data
     /// </summary>
-    void ProcessSkeleton();
+    void ProcessSkeleton(int &forward, INPUT &ip, bool *keyPressedArray);
 
 };
