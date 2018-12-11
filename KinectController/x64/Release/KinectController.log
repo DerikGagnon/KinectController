@@ -1,0 +1,7 @@
+﻿  KinectControls.cpp
+c:\users\derik gagnon\desktop\kinectcontroller\kinectcontroller\kinectcontrols.h(10): warning C4005: 'WINVER': macro redefinition
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\shared\sdkddkver.h(236): note: see previous definition of 'WINVER'
+  Generating code
+  All 18 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  Finished generating code
+  KinectController.vcxproj -> C:\Users\Derik Gagnon\Desktop\KinectController\x64\Release\KinectController.exe
